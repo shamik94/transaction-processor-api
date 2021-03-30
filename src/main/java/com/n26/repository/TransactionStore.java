@@ -43,4 +43,9 @@ public class TransactionStore implements TransactionsRepository{
         return new ArrayList<>(transactions);
     }
 
+    @Override
+    public void deleteTransactions() {
+        transactions.clear();
+    }
+
 }

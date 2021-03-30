@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface TransactionsRepository {
-    public void insertTransaction (Transaction transaction);
-    public void deleteTransactionsBeforeTimeStamp (LocalDateTime localDateTime);
-    public List<Transaction> getAllTransactions();
+    void insertTransaction (Transaction transaction);
+    void deleteTransactionsBeforeTimeStamp (LocalDateTime localDateTime);
+    List<Transaction> getAllTransactions();
+    void deleteTransactions();
 }

@@ -23,13 +23,19 @@ public class TransactionService {
     private StatisticsMapper statisticsMapper;
 
     private static final Long ZERO = 0L;
+    private static final Integer SIXTY = 60;
 
     public void insertTransaction (Transaction transaction) {
+
+        //TODO Check for future date
         transactionsRepo.insertTransaction(transaction);
     }
 
     public Statistics getStatistics () {
-        transactionsRepo.deleteTransactionsBeforeTimeStamp(LocalDateTime.now());
+        transactionsRepo.deleteTransactionsBeforeTimeStamp(LocalDateTime.now().minusSeconds(SIXTY));
+
+        //TODO format Bigdecimal to 2 decimal places
+        // TODO add logs
         List<Transaction> transactions = transactionsRepo.getAllTransactions();
 
         if (transactions.isEmpty()) {
@@ -48,5 +54,9 @@ public class TransactionService {
         }
 
         return statisticsMapper.map(maxVal, minVal, sum, avg, count);
+    }
+
+    public void deleteTransactions() {
+        transactionsRepo.deleteTransactions();
     }
 }

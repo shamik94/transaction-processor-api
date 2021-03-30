@@ -1,12 +1,14 @@
 package com.n26.model;
 
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class Statistics {
 
     BigDecimal sum;
