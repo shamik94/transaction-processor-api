@@ -62,7 +62,18 @@ public class TransactionServiceTests {
     }
 
     @Test
-    public void TC003_deleteStatistics() {
+    public void TC003_getStatisticsEmpty() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        Mockito.doReturn(transactions).when(transactionsRepository).getAllTransactions();
+        transactionService.getStatistics(UUID.randomUUID());
+
+        verify(transactionsRepository, times(1)).deleteTransactionsBeforeTimeStamp(any());
+        verify(statisticsMapper, times(1)).map();
+    }
+
+    @Test
+    public void TC004_deleteStatistics() {
         transactionService.deleteTransactions(UUID.randomUUID());
         verify(transactionsRepository, times(1)).deleteTransactions();
     }
