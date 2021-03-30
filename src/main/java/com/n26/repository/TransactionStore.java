@@ -26,12 +26,12 @@ public class TransactionStore implements TransactionsRepository{
     }
 
     @Override
-    public void insertTransaction (Transaction t) {
+    public synchronized void insertTransaction (Transaction t) {
         transactions.add(t);
     }
 
     @Override
-    public void deleteTransactionsBeforeTimeStamp(ZonedDateTime zonedDateTime) {
+    public synchronized void deleteTransactionsBeforeTimeStamp(ZonedDateTime zonedDateTime) {
         if (transactions.isEmpty()) return;
         while (transactions.peek() != null && transactions.peek().getTimestamp().isBefore(zonedDateTime)) {
             transactions.poll();
@@ -39,12 +39,12 @@ public class TransactionStore implements TransactionsRepository{
     }
 
     @Override
-    public List<Transaction> getAllTransactions() {
+    public synchronized List<Transaction> getAllTransactions() {
         return new ArrayList<>(transactions);
     }
 
     @Override
-    public void deleteTransactions() {
+    public synchronized void deleteTransactions() {
         transactions.clear();
     }
 

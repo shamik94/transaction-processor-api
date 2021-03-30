@@ -4,13 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+import java.util.List;
+
 @Getter
+@Setter
 public class ErrorMessage {
 
     @JsonProperty
     String message;
-    
-    @JsonProperty
-    Integer code;
+    @JsonProperty("errors")
+    List<ErrorDetail> errorDetails;
+
+    @Override
+    public String toString() {
+        return "ErrorMessage{" +
+                "message='" + message + '\'' +
+                ", errorDetails=" + errorDetails +
+                '}';
+    }
 }
