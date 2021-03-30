@@ -3,7 +3,7 @@ package com.n26.model;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Builder
 @Getter
@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
 public class Transaction {
 
     private BigDecimal amount;
-    private LocalDateTime timestamp;
+    private ZonedDateTime timestamp;
 }

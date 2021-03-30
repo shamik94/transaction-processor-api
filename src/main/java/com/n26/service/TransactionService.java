@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.math.RoundingMode;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class TransactionService {
     }
 
     public Statistics getStatistics () {
-        transactionsRepo.deleteTransactionsBeforeTimeStamp(LocalDateTime.now().minusSeconds(SIXTY));
+        transactionsRepo.deleteTransactionsBeforeTimeStamp(ZonedDateTime.now().minusSeconds(SIXTY));
 
         //TODO format Bigdecimal to 2 decimal places
         // TODO add logs
@@ -42,15 +43,19 @@ public class TransactionService {
             return statisticsMapper.map();
         }
 
-        BigDecimal maxVal = null, minVal = null, avg = new BigDecimal(ZERO), sum = new BigDecimal(ZERO);
+        BigDecimal maxVal = transactions.get(0).getAmount()
+                , minVal = transactions.get(0).getAmount()
+                , avg = new BigDecimal(ZERO)
+                , sum = new BigDecimal(ZERO);
         long count = ZERO;
+
 
         for (Transaction transaction : transactions) {
             sum = sum.add(transaction.getAmount());
             count++;
-            avg = sum.divide(new BigDecimal(count));
-            maxVal = null == maxVal ? transaction.getAmount() : maxVal.max(transaction.getAmount());
-            minVal = null == minVal ? transaction.getAmount() : minVal.min(transaction.getAmount());
+            avg = sum.divide(new BigDecimal(count), 2, RoundingMode.HALF_UP);
+            maxVal = maxVal.max(transaction.getAmount());
+            minVal = minVal.min(transaction.getAmount());
         }
 
         return statisticsMapper.map(maxVal, minVal, sum, avg, count);

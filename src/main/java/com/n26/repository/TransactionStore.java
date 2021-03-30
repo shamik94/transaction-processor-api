@@ -3,7 +3,7 @@ package com.n26.repository;
 import com.n26.model.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -31,9 +31,9 @@ public class TransactionStore implements TransactionsRepository{
     }
 
     @Override
-    public void deleteTransactionsBeforeTimeStamp(LocalDateTime localDateTime) {
+    public void deleteTransactionsBeforeTimeStamp(ZonedDateTime zonedDateTime) {
         if (transactions.isEmpty()) return;
-        while (transactions.peek() != null && transactions.peek().getTimestamp().isBefore(localDateTime)) {
+        while (transactions.peek() != null && transactions.peek().getTimestamp().isBefore(zonedDateTime)) {
             transactions.poll();
         }
     }
