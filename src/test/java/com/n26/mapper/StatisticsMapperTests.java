@@ -1,6 +1,6 @@
 package com.n26.mapper;
 
-import com.n26.model.Statistics;
+import com.n26.response.StatisticsResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,27 +18,27 @@ public class StatisticsMapperTests {
 
     @Test
     public void TC001_mapNoArgs() {
-        Statistics statistics = statisticsMapper.map();
-        long count = statistics.getCount();
+        StatisticsResponse statisticsResponse = statisticsMapper.map();
+        long count = statisticsResponse.getCount();
         assertEquals(0, count);
-        assertEquals("0.00", statistics.getMax());
-        assertEquals("0.00", statistics.getMin());
-        assertEquals("0.00", statistics.getAvg());
-        assertEquals("0.00", statistics.getSum());
+        assertEquals("0.00", statisticsResponse.getMax());
+        assertEquals("0.00", statisticsResponse.getMin());
+        assertEquals("0.00", statisticsResponse.getAvg());
+        assertEquals("0.00", statisticsResponse.getSum());
     }
 
     @Test
     public void TC002_mapAllArgs() {
-        Statistics statistics = statisticsMapper.map(new BigDecimal(20),
+        StatisticsResponse statisticsResponse = statisticsMapper.map(new BigDecimal(20),
                 new BigDecimal(10),
                 new BigDecimal(100),
                 new BigDecimal(15),
                 7L);
-        long count = statistics.getCount();
+        long count = statisticsResponse.getCount();
         assertEquals(7, count);
-        assertEquals("20.00", statistics.getMax());
-        assertEquals("10.00", statistics.getMin());
-        assertEquals("15.00", statistics.getAvg());
-        assertEquals("100.00", statistics.getSum());
+        assertEquals("20.00", statisticsResponse.getMax());
+        assertEquals("10.00", statisticsResponse.getMin());
+        assertEquals("15.00", statisticsResponse.getAvg());
+        assertEquals("100.00", statisticsResponse.getSum());
     }
 }

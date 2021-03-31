@@ -1,4 +1,4 @@
-package com.n26.model;
+package com.n26.response;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Statistics {
+public class StatisticsResponse {
 
     String sum;
     String avg;

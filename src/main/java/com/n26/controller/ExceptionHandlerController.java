@@ -2,6 +2,7 @@ package com.n26.controller;
 
 import com.n26.exception.ErrorDetail;
 import com.n26.exception.ErrorMessage;
+import com.n26.exception.UnprocessableEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -21,7 +22,7 @@ import java.util.Collections;
 public class ExceptionHandlerController {
 
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ResponseBody
     protected ErrorMessage statusCode400(HttpServletRequest req, MethodArgumentNotValidException ex) {
@@ -29,10 +30,10 @@ public class ExceptionHandlerController {
         return populateErrorMessage(req, ex);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ExceptionHandler(UnprocessableEntityException.class)
     @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    protected ErrorMessage statusCode422(HttpServletRequest req, HttpMessageNotReadableException ex) {
+    protected ErrorMessage statusCode422(HttpServletRequest req, UnprocessableEntityException ex) {
         log.error(ex.getMessage(), ex);
         return populateErrorMessage(req, ex);
     }

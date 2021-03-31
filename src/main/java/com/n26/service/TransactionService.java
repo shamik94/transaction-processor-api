@@ -1,7 +1,7 @@
 package com.n26.service;
 
 import com.n26.mapper.StatisticsMapper;
-import com.n26.model.Statistics;
+import com.n26.response.StatisticsResponse;
 import com.n26.model.Transaction;
 import com.n26.repository.TransactionsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class TransactionService {
         log.info("Key = {} Successfully inserted transaction", key);
     }
 
-    public Statistics getStatistics(UUID key) {
+    public StatisticsResponse getStatistics(UUID key) {
         transactionsRepo.deleteTransactionsBeforeTimeStamp(ZonedDateTime.now().minusSeconds(SIXTY));
         log.info("Key = {} Deleting old Transactions", key);
         List<Transaction> transactions = transactionsRepo.getAllTransactions();

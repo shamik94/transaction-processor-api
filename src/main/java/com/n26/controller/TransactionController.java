@@ -1,14 +1,16 @@
 package com.n26.controller;
 
-import com.n26.model.Statistics;
+import com.n26.exception.UnprocessableEntityException;
+import com.n26.mapper.TransactionMapper;
 import com.n26.model.Transaction;
+import com.n26.response.StatisticsResponse;
+import com.n26.response.TransactionResponse;
 import com.n26.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,18 +26,22 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    TransactionMapper transactionMapper;
+
     @RequestMapping(value = {"/statistics"}, method = RequestMethod.GET)
     @ResponseBody
-    public Statistics getStatistics() {
+    public StatisticsResponse getStatistics() {
         UUID key = UUID.randomUUID();
         log.info("Key = {} Received GET request in Controller", UUID.randomUUID());
         return transactionService.getStatistics(key);
     }
 
     @RequestMapping(value = "/transactions", method = RequestMethod.POST)
-    public ResponseEntity<?> insertTransaction(@RequestBody @Valid Transaction transaction) {
+    public ResponseEntity<?> insertTransaction(@RequestBody @Valid TransactionResponse transactionResponse) {
         UUID key = UUID.randomUUID();
-        log.info("Key = {} Received POST request in Controller. Amount = {}, Timestamp = {}", key, transaction.getAmount(), transaction.getTimestamp());
+        log.info("Key = {} Received POST request in Controller. Amount = {}, Timestamp = {}", key, transactionResponse.getAmount(), transactionResponse.getTimestamp());
+        Transaction transaction = transactionMapper.map(transactionResponse);
         HttpHeaders headers = new HttpHeaders();
         if (transaction.getTimestamp().isBefore(ZonedDateTime.now().minusSeconds(SIXTY))) {
             log.info("Key = {} Timestamp is in before 60 seconds", key);
@@ -43,7 +49,7 @@ public class TransactionController {
         }
         if (transaction.getTimestamp().isAfter(ZonedDateTime.now())) {
             log.info("Key = {} Timestamp is in future.", key);
-            throw new HttpMessageNotReadableException("Timestamp cannot be in future.");
+            throw new UnprocessableEntityException("Timestamp cannot be in future.");
         }
         transactionService.insertTransaction(transaction, key);
         return new ResponseEntity<>(headers, HttpStatus.CREATED);

@@ -1,6 +1,6 @@
 package com.n26.controller;
 
-import com.n26.model.Statistics;
+import com.n26.response.StatisticsResponse;
 import com.n26.service.TransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +33,7 @@ public class TransactionControllerTests {
 
     @Test
     public void TC001_getStatistics() throws Exception {
-        Statistics statistics = Statistics.builder()
+        StatisticsResponse statisticsResponse = StatisticsResponse.builder()
                 .count(0L)
                 .avg("0.00")
                 .sum("0.00")
@@ -41,7 +41,7 @@ public class TransactionControllerTests {
                 .min("0.00")
                 .build();
 
-        Mockito.doReturn(statistics).when(transactionService).getStatistics(any());
+        Mockito.doReturn(statisticsResponse).when(transactionService).getStatistics(any());
 
         mvc.perform(MockMvcRequestBuilders
                 .get("/statistics")

@@ -1,6 +1,6 @@
 package com.n26.mapper;
 
-import com.n26.model.Statistics;
+import com.n26.response.StatisticsResponse;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -9,8 +9,8 @@ import java.text.DecimalFormat;
 @Component
 public class StatisticsMapper {
 
-    public Statistics map (BigDecimal max, BigDecimal min, BigDecimal sum, BigDecimal avg, Long count) {
-        return Statistics.builder()
+    public StatisticsResponse map (BigDecimal max, BigDecimal min, BigDecimal sum, BigDecimal avg, Long count) {
+        return StatisticsResponse.builder()
                 .count(count)
                 .avg(formatBigDecimal(avg))
                 .sum(formatBigDecimal(sum))
@@ -19,10 +19,10 @@ public class StatisticsMapper {
                 .build();
     }
 
-    public Statistics map () {
+    public StatisticsResponse map () {
         final long ZERO = 0L;
         String zero = formatBigDecimal(new BigDecimal(ZERO));
-        return Statistics.builder()
+        return StatisticsResponse.builder()
                 .count(ZERO)
                 .min(zero)
                 .max(zero)
